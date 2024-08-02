@@ -1,8 +1,30 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: https://ven-eco-admin.s3.amazonaws.com/cfn/stopinator/stopinator.yaml
-# aws cloudformation create-stack --stack-name stopinator --template-body file://<PATH_TO>/stopinator.yaml --capabilities CAPABILITY_IAM
+Description: Stopinator
 
 Resources:
+  StackSetExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "StackSetExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "cloudformation.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "StackSetExecutionPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "sts:AssumeRole"
+                  - "ec2:*"
+                  - "lambda:*"
+                  - "iam:*"
+                Resource: "*"
 
   StopinatorExecutionRole:
     Type: AWS::IAM::Role
